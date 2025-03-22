@@ -1,0 +1,17 @@
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <logger name="br.com.smanager" level="debug" additivity="false">
+        <appender-ref ref="console" />
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="console" />
+    </root>
+</configuration>
