@@ -4,13 +4,20 @@ import br.com.smanager.domain.entity.Project;
 
 import java.time.LocalDate;
 
-public record ProjectDto(String id, String name, String description, LocalDate initialDate, LocalDate finalDate) {
+public record ProjectDto(
+        String id,
+        String name,
+        String description,
+        LocalDate initialDate,
+        LocalDate finalDate,
+        String status) {
 
     public static ProjectDto from(Project project) {
         return new ProjectDto(project.getId(),
                 project.getName(),
                 project.getDescription(),
                 project.getInitialDate(),
-                project.getFinalDate());
+                project.getFinalDate(),
+                project.getStatus().name());
     }
 }

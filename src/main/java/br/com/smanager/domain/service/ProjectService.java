@@ -1,6 +1,7 @@
 package br.com.smanager.domain.service;
 
 import br.com.smanager.domain.entity.Project;
+import br.com.smanager.infrastructure.exception.ProjectNotFoundException;
 import br.com.smanager.domain.model.ProjectStatus;
 import br.com.smanager.domain.repository.ProjectRepository;
 import br.com.smanager.infrastructure.dto.ProjectDto;
@@ -27,6 +28,10 @@ public class ProjectService {
 
         var project = projectRepository.save(newProject);
         return ProjectDto.from(project);
+    }
+
+    public ProjectDto getById(String id) {
+        return ProjectDto.from(projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id)));
     }
 
 }
