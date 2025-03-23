@@ -6,15 +6,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "TB_MEMBER")
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Member {
 
     @Id
@@ -32,5 +34,5 @@ public class Member {
     private String email;
 
     @Column(name = "deleted", nullable = false)
-    private Boolean active;
+    private Boolean deleted;
 }
