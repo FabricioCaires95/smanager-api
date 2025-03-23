@@ -5,11 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "TB_MEMBER")
@@ -35,4 +38,7 @@ public class Member {
 
     @Column(name = "deleted", nullable = false)
     private Boolean deleted;
+
+    @ManyToMany(mappedBy = "members")
+    private List<Project> projects;
 }

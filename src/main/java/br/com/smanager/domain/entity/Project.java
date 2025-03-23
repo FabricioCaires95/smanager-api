@@ -7,6 +7,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
 
@@ -45,5 +49,13 @@ public class Project {
     @Column(name = "status", nullable = false)
     @Enumerated(STRING)
     private ProjectStatus status;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tb_project_member",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id")
+    )
+    private List<Member> members;
 
 }

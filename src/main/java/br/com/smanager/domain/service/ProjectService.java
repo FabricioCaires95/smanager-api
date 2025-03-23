@@ -13,12 +13,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final MemberService memberService;
 
     @Transactional
     public ProjectDto create(SaveProjectDto projectDto) {
@@ -33,6 +37,9 @@ public class ProjectService {
                 .build();
 
         var project = projectRepository.save(newProject);
+
+        addMembersToProject(projectDto.members(), project);
+
         return ProjectDto.from(project);
     }
 
@@ -58,6 +65,7 @@ public class ProjectService {
         project.setFinalDate(projectDto.finalDate());
         project.setStatus(convertStatus(projectDto.status()));
 
+        addMembersToProject(projectDto.members(), project);
         return project;
     }
 
@@ -77,5 +85,16 @@ public class ProjectService {
         if (isProjectExist) {
             throw new DuplicateProjectException("DuplicatedProject", "This project name already exists:" + name);
         }
+    }
+
+    private void addMembersToProject(Set<String> membersId, Project project) {
+        var members = Optional
+                .ofNullable(membersId)
+                .orElse(Set.of())
+                .stream()
+                .map(memberService::loadMemberById)
+                .collect(Collectors.toList());
+
+        project.setMembers(members);
     }
 }
