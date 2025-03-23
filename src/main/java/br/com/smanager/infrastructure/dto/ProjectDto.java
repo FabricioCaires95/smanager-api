@@ -20,4 +20,13 @@ public record ProjectDto(
                 project.getFinalDate(),
                 project.getStatus().name());
     }
+
+    public static Project toEntity(ProjectDto project) {
+        return new Project(project.id,
+                project.name,
+                project.description,
+                project.initialDate,
+                project.initialDate,
+                null);
+    }
 }

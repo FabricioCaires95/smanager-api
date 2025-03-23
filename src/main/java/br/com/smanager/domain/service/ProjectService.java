@@ -1,7 +1,7 @@
 package br.com.smanager.domain.service;
 
 import br.com.smanager.domain.entity.Project;
-import br.com.smanager.infrastructure.exception.ProjectNotFoundException;
+import br.com.smanager.domain.exception.ProjectNotFoundException;
 import br.com.smanager.domain.model.ProjectStatus;
 import br.com.smanager.domain.repository.ProjectRepository;
 import br.com.smanager.infrastructure.dto.ProjectDto;
@@ -30,8 +30,13 @@ public class ProjectService {
         return ProjectDto.from(project);
     }
 
-    public ProjectDto getById(String id) {
-        return ProjectDto.from(projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id)));
+    public Project getById(String id) {
+        return projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
     }
 
+    @Transactional
+    public void delete(String projectId) {
+        var project = getById(projectId);
+        projectRepository.delete(project);
+    }
 }
