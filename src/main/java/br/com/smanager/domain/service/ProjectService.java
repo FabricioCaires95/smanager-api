@@ -1,6 +1,7 @@
 package br.com.smanager.domain.service;
 
 import br.com.smanager.domain.entity.Project;
+import br.com.smanager.domain.exception.DuplicateProjectException;
 import br.com.smanager.domain.exception.InvalidProjectStatusException;
 import br.com.smanager.domain.exception.ProjectNotFoundException;
 import br.com.smanager.domain.model.ProjectStatus;
@@ -11,6 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
@@ -19,6 +22,8 @@ public class ProjectService {
 
     @Transactional
     public ProjectDto create(SaveProjectDto projectDto) {
+        existsProjectWithName(projectDto.name(), null);
+
         Project newProject = Project.builder()
                 .name(projectDto.name())
                 .description(projectDto.description())
@@ -43,6 +48,8 @@ public class ProjectService {
 
     @Transactional
     public Project updateProject(String id, SaveProjectDto projectDto) {
+        existsProjectWithName(projectDto.name(), id);
+
         var project = getById(id);
 
         project.setName(projectDto.name());
@@ -59,6 +66,16 @@ public class ProjectService {
             return ProjectStatus.valueOf(statusStr);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw new InvalidProjectStatusException(statusStr);
+        }
+    }
+
+    private void existsProjectWithName(String name, String idToExclude) {
+         var isProjectExist =  projectRepository.findProjectByName(name)
+                .filter(project -> !Objects.equals(project.getId(), idToExclude))
+                .isPresent();
+
+        if (isProjectExist) {
+            throw new DuplicateProjectException("DuplicatedProject", "This project name already exists:" + name);
         }
     }
 }
