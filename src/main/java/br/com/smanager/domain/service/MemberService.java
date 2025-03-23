@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -54,6 +55,20 @@ public class MemberService {
         member.setEmail(memberDto.email());
 
         return member;
+    }
+
+    public List<Member> findMembers(String email) {
+        List<Member> members;
+        if (Objects.isNull(email)) {
+            members = memberRepository.findAllNotDeleted();
+        } else {
+            members = memberRepository
+                    .findByEmailAndDeleted(email, false)
+                    .map(List::of)
+                    .orElse(List.of());
+        }
+
+        return members;
     }
 
     private void checkEmailDuplication(String email, String idToExclude) {
