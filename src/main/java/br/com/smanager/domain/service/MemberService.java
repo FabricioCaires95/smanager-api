@@ -29,7 +29,7 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member findById(String id) {
+    public Member loadMemberById(String id) {
         return memberRepository
                 .findByIdAndDeleted(id, false)
                 .orElseThrow(() -> new MemberNotFoundException(id));
@@ -37,9 +37,19 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(String id) {
-        var member = findById(id);
+        var member = loadMemberById(id);
 
         member.setDeleted(Boolean.TRUE);
     }
+
+    @Transactional
+    public Member updateMember(String id, SaveMemberDto memberDto) {
+        var member = loadMemberById(id);
+        member.setName(memberDto.name());
+        member.setEmail(memberDto.email());
+
+        return member;
+    }
+
 
 }
