@@ -6,6 +6,8 @@ import br.com.smanager.infrastructure.dto.SaveMemberDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +29,11 @@ public class MemberRestResource {
 
         var member = memberService.create(memberDto);
         return ResponseEntity.created(URI.create(PATH_MEMBER + "/" + member.getId())).body(MemberDto.from(member));
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<MemberDto> getById(@PathVariable String id){
+        var member = memberService.findById(id);
+        return ResponseEntity.ok(MemberDto.from(member));
     }
 }

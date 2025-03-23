@@ -1,6 +1,7 @@
 package br.com.smanager.domain.service;
 
 import br.com.smanager.domain.entity.Member;
+import br.com.smanager.domain.exception.MemberNotFoundException;
 import br.com.smanager.domain.repository.MemberRepository;
 import br.com.smanager.infrastructure.dto.SaveMemberDto;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,12 @@ public class MemberService {
                 .build();
 
         return memberRepository.save(member);
+    }
+
+    public Member findById(String id) {
+        return memberRepository
+                .findByIdAndDeleted(id, false)
+                .orElseThrow(() -> new MemberNotFoundException(id));
     }
 
 }
