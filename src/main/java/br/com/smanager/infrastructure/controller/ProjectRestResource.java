@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,12 @@ public class ProjectRestResource {
     public ResponseEntity<Void> delete(@PathVariable String id){
         projectService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ProjectDto> update(@PathVariable String id, @RequestBody @Valid SaveProjectDto projectDto){
+        var updatedProject = projectService.updateProject(id, projectDto);
+        return ResponseEntity.ok(ProjectDto.from(updatedProject));
     }
 
 }

@@ -1,6 +1,7 @@
 package br.com.smanager.domain.service;
 
 import br.com.smanager.domain.entity.Project;
+import br.com.smanager.domain.exception.InvalidProjectStatusException;
 import br.com.smanager.domain.exception.ProjectNotFoundException;
 import br.com.smanager.domain.model.ProjectStatus;
 import br.com.smanager.domain.repository.ProjectRepository;
@@ -38,5 +39,26 @@ public class ProjectService {
     public void delete(String projectId) {
         var project = getById(projectId);
         projectRepository.delete(project);
+    }
+
+    @Transactional
+    public Project updateProject(String id, SaveProjectDto projectDto) {
+        var project = getById(id);
+
+        project.setName(projectDto.name());
+        project.setDescription(projectDto.description());
+        project.setInitialDate(projectDto.initialDate());
+        project.setFinalDate(projectDto.finalDate());
+        project.setStatus(convertStatus(projectDto.status()));
+
+        return project;
+    }
+
+    private ProjectStatus convertStatus(String statusStr) {
+        try {
+            return ProjectStatus.valueOf(statusStr);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new InvalidProjectStatusException(statusStr);
+        }
     }
 }
