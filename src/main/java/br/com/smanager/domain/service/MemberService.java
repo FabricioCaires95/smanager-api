@@ -4,6 +4,7 @@ import br.com.smanager.domain.entity.Member;
 import br.com.smanager.domain.exception.MemberNotFoundException;
 import br.com.smanager.domain.repository.MemberRepository;
 import br.com.smanager.infrastructure.dto.SaveMemberDto;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    @Transactional
     public Member create(SaveMemberDto memberDto) {
 
         var member = Member.builder()
@@ -31,6 +33,13 @@ public class MemberService {
         return memberRepository
                 .findByIdAndDeleted(id, false)
                 .orElseThrow(() -> new MemberNotFoundException(id));
+    }
+
+    @Transactional
+    public void deleteMember(String id) {
+        var member = findById(id);
+
+        member.setDeleted(Boolean.TRUE);
     }
 
 }
