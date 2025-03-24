@@ -1,9 +1,6 @@
 package br.com.smanager.infrastructure.controller;
 
-import br.com.smanager.domain.service.ProjectService;
 import br.com.smanager.domain.service.TaskService;
-import br.com.smanager.infrastructure.dto.ProjectDto;
-import br.com.smanager.infrastructure.dto.SaveProjectDto;
 import br.com.smanager.infrastructure.dto.SaveTaskDto;
 import br.com.smanager.infrastructure.dto.TaskDto;
 import jakarta.validation.Valid;
@@ -48,11 +45,11 @@ public class TaskRestResource {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
-//
-//    @PutMapping(value = "/{id}")
-//    public ResponseEntity<ProjectDto> update(@PathVariable String id, @RequestBody @Valid SaveProjectDto projectDto){
-//        var updatedProject = taskService.updateProject(id, projectDto);
-//        return ResponseEntity.ok(ProjectDto.from(updatedProject));
-//    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<TaskDto> update(@PathVariable String id, @RequestBody @Valid SaveTaskDto taskDto){
+        var updatedTask = taskService.update(id, taskDto);
+        return ResponseEntity.ok(TaskDto.from(updatedTask));
+    }
 
 }

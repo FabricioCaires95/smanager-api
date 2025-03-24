@@ -7,7 +7,6 @@ import br.com.smanager.domain.repository.TaskRepository;
 import br.com.smanager.infrastructure.dto.SaveTaskDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,9 +32,22 @@ public class TaskService {
                 .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
+    @Transactional
     public void deleteTask(String id) {
         var task = loadById(id);
         taskRepository.delete(task);
+    }
+
+    @Transactional
+    public Task update(String id, SaveTaskDto taskDto) {
+        var task = loadById(id);
+
+        task.setTitle(taskDto.title());
+        task.setDescription(taskDto.description());
+        task.setNumberOfDays(taskDto.numberOfDays());
+        task.setStatus(taskDto.status());
+
+        return task;
     }
 }
 
