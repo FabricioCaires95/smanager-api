@@ -37,11 +37,11 @@ public class TaskRestResource {
         return ResponseEntity.created(URI.create(PATH_PROJECTS + "/" + task.getId())).body(TaskDto.from(task));
     }
 
-//    @GetMapping(value = "/{id}")
-//    public ResponseEntity<ProjectDto> getById(@PathVariable String id){
-//        var project = taskService.getById(id);
-//        return ResponseEntity.ok(ProjectDto.from(project));
-//    }
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<TaskDto> getById(@PathVariable String id){
+        var task = taskService.loadById(id);
+        return ResponseEntity.ok(TaskDto.from(task));
+    }
 //
 //    @DeleteMapping(value = "/{id}")
 //    public ResponseEntity<Void> delete(@PathVariable String id){
