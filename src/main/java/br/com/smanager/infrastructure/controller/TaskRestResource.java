@@ -42,12 +42,12 @@ public class TaskRestResource {
         var task = taskService.loadById(id);
         return ResponseEntity.ok(TaskDto.from(task));
     }
-//
-//    @DeleteMapping(value = "/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable String id){
-//        taskService.delete(id);
-//        return ResponseEntity.noContent().build();
-//    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id){
+        taskService.deleteTask(id);
+        return ResponseEntity.noContent().build();
+    }
 //
 //    @PutMapping(value = "/{id}")
 //    public ResponseEntity<ProjectDto> update(@PathVariable String id, @RequestBody @Valid SaveProjectDto projectDto){

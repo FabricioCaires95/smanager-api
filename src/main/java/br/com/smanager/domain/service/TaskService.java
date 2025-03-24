@@ -32,5 +32,10 @@ public class TaskService {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
     }
+
+    public void deleteTask(String id) {
+        var task = loadById(id);
+        taskRepository.delete(task);
+    }
 }
 
