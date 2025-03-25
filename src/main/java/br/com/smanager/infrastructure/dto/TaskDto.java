@@ -8,9 +8,12 @@ public record TaskDto(
         String title,
         String description,
         Integer numberOfDays,
-        TaskStatus status) {
+        TaskStatus status,
+        ProjectDto project,
+        MemberDto assignedMember) {
 
     public static TaskDto from(Task task) {
-        return new TaskDto(task.getId(), task.getTitle(), task.getDescription(), task.getNumberOfDays(), task.getStatus());
+        return new TaskDto(task.getId(), task.getTitle(), task.getDescription(), task.getNumberOfDays(),
+                task.getStatus(), ProjectDto.from(task.getProject()), MemberDto.from(task.getAssignedMember()));
     }
 }
