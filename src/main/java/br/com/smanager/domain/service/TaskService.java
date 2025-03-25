@@ -3,6 +3,7 @@ package br.com.smanager.domain.service;
 import br.com.smanager.domain.entity.Member;
 import br.com.smanager.domain.entity.Project;
 import br.com.smanager.domain.entity.Task;
+import br.com.smanager.domain.exception.InvalidTaskStatusException;
 import br.com.smanager.domain.exception.TaskNotFoundException;
 import br.com.smanager.domain.model.TaskStatus;
 import br.com.smanager.domain.repository.TaskRepository;
@@ -11,7 +12,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +71,15 @@ public class TaskService {
         return task;
     }
 
+    public List<Task> findTasks(String projectId, String memberId, String status, String partialTitle) {
+
+        return taskRepository.find(
+                projectId,
+                memberId,
+                Optional.ofNullable(status).map(this::convertTaskStatus).orElse(null),
+                partialTitle);
+    }
+
     private Project getProjectIfExists(String projectId) {
         Project project = null;
         if (Objects.nonNull(projectId)) {
@@ -84,5 +96,12 @@ public class TaskService {
         return member;
     }
 
+    private TaskStatus convertTaskStatus(String status) {
+        try {
+            return TaskStatus.valueOf(status);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new InvalidTaskStatusException(status);
+        }
+    }
 }
 

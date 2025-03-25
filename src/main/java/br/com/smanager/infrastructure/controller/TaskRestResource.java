@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.List;
 
 import static br.com.smanager.infrastructure.controller.RestConstants.PATH_PROJECTS;
 import static br.com.smanager.infrastructure.controller.RestConstants.PATH_TASKS;
@@ -50,6 +52,19 @@ public class TaskRestResource {
     public ResponseEntity<TaskDto> update(@PathVariable String id, @RequestBody @Valid SaveTaskDto taskDto){
         var updatedTask = taskService.update(id, taskDto);
         return ResponseEntity.ok(TaskDto.from(updatedTask));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TaskDto>> findTasks(
+            @RequestParam(name = "projectId", required = false) String projectId,
+            @RequestParam(name = "memberId", required = false) String memberId,
+            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "partialTitle", required = false) String partialTitle
+    ) {
+
+        var tasks = taskService.findTasks(projectId, memberId, status, partialTitle);
+
+        return ResponseEntity.ok(tasks.stream().map(TaskDto::from).toList());
     }
 
 }
