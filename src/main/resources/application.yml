@@ -7,3 +7,6 @@ spring:
     name: smanager-service
   jackson:
     default-property-inclusion: non_null
+
+app:
+  pageSize: 2

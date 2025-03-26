@@ -7,9 +7,12 @@ import br.com.smanager.domain.exception.InvalidTaskStatusException;
 import br.com.smanager.domain.exception.TaskNotFoundException;
 import br.com.smanager.domain.model.TaskStatus;
 import br.com.smanager.domain.repository.TaskRepository;
+import br.com.smanager.infrastructure.config.AppConfigProperties;
 import br.com.smanager.infrastructure.dto.SaveTaskDto;
+import br.com.smanager.infrastructure.util.PaginationHelper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +26,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final ProjectService projectService;
     private final MemberService memberService;
+    private final AppConfigProperties props;
 
     @Transactional
     public Task create(SaveTaskDto taskDto) {
@@ -71,13 +75,21 @@ public class TaskService {
         return task;
     }
 
-    public List<Task> findTasks(String projectId, String memberId, String status, String partialTitle) {
-
+    public Page<Task> findTasks(
+            String projectId,
+            String memberId,
+            String status,
+            String partialTitle,
+            Integer page,
+            String direction,
+            List<String> properties
+    ) {
         return taskRepository.find(
                 projectId,
                 memberId,
                 Optional.ofNullable(status).map(this::convertTaskStatus).orElse(null),
-                partialTitle);
+                partialTitle,
+                PaginationHelper.createPageable(page, props.getPageSize(), direction, properties));
     }
 
     private Project getProjectIfExists(String projectId) {

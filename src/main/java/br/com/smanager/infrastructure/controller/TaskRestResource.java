@@ -3,6 +3,7 @@ package br.com.smanager.infrastructure.controller;
 import br.com.smanager.domain.service.TaskService;
 import br.com.smanager.infrastructure.dto.SaveTaskDto;
 import br.com.smanager.infrastructure.dto.TaskDto;
+import br.com.smanager.infrastructure.util.SortProperties;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static br.com.smanager.infrastructure.controller.RestConstants.PATH_PROJECTS;
 import static br.com.smanager.infrastructure.controller.RestConstants.PATH_TASKS;
@@ -59,10 +61,20 @@ public class TaskRestResource {
             @RequestParam(name = "projectId", required = false) String projectId,
             @RequestParam(name = "memberId", required = false) String memberId,
             @RequestParam(name = "status", required = false) String status,
-            @RequestParam(name = "partialTitle", required = false) String partialTitle
+            @RequestParam(name = "partialTitle", required = false) String partialTitle,
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "direction", required = false) String direction,
+            @RequestParam(name = "sort", required = false) SortProperties propeties
     ) {
 
-        var tasks = taskService.findTasks(projectId, memberId, status, partialTitle);
+        var tasks = taskService.findTasks(
+                projectId,
+                memberId,
+                status,
+                partialTitle,
+                page,
+                direction,
+                Optional.ofNullable(propeties).map(SortProperties::getSortPropertiesList).orElse(List.of()));
 
         return ResponseEntity.ok(tasks.stream().map(TaskDto::from).toList());
     }
