@@ -5,8 +5,22 @@ server:
 spring:
   application:
     name: smanager-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/pmanager-db
+    username: root
+    password: ${DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
   jackson:
     default-property-inclusion: non_null
 
 app:
-  pageSize: 2
+  general:
+    pageSize: 2
+  security:
+    apiKey: ${API_KEY}

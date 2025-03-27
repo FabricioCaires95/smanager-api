@@ -89,7 +89,7 @@ public class TaskService {
                 memberId,
                 Optional.ofNullable(status).map(this::convertTaskStatus).orElse(null),
                 partialTitle,
-                PaginationHelper.createPageable(page, props.getPageSize(), direction, properties));
+                PaginationHelper.createPageable(page, props.getGeneral().getPageSize(), direction, properties));
     }
 
     private Project getProjectIfExists(String projectId) {
