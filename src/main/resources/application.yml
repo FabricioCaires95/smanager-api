@@ -28,5 +28,5 @@ app:
   general:
     pageSize: 2
   security:
-    apiKey: ${API_KEY}
+    masterApiKey: ${API_KEY}
     expirationDays: 2

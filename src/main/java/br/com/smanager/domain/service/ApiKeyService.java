@@ -1,6 +1,7 @@
 package br.com.smanager.domain.service;
 
 import br.com.smanager.domain.document.ApiKey;
+import br.com.smanager.domain.exception.ApiKeyExpiredException;
 import br.com.smanager.domain.exception.ApiKeyNotFoundException;
 import br.com.smanager.domain.repository.ApiKeyRepository;
 import br.com.smanager.infrastructure.config.AppConfigProperties;
@@ -36,9 +37,23 @@ public class ApiKeyService {
         apiKeyRepository.save(apiKey);
     }
 
+    public void validateApiKey(String value){
+        var apiKey = loadApiKeyByValue(value);
+
+        if (apiKey.getExpirationWhen().isBefore(Instant.now())){
+            throw new ApiKeyExpiredException("Invalid API Key: " + value);
+        }
+    }
+
     private ApiKey loadApiKeyById(String id){
         return apiKeyRepository
                 .findById(id)
                 .orElseThrow(() -> new ApiKeyNotFoundException(id));
+    }
+
+    private ApiKey loadApiKeyByValue(String value){
+        return apiKeyRepository
+                .findByValue(value)
+                .orElseThrow(() -> new ApiKeyNotFoundException(value));
     }
 }
