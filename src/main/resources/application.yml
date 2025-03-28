@@ -16,6 +16,11 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: pmanagerdb
   jackson:
     default-property-inclusion: non_null
 
@@ -24,3 +29,4 @@ app:
     pageSize: 2
   security:
     apiKey: ${API_KEY}
+    expirationDays: 2
