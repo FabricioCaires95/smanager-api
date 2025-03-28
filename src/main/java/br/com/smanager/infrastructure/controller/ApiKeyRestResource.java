@@ -4,7 +4,9 @@ import br.com.smanager.domain.service.ApiKeyService;
 import br.com.smanager.infrastructure.dto.ApiKeyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +27,12 @@ public class ApiKeyRestResource {
         return ResponseEntity
             .created(URI.create(RestConstants.PATH_API_KEYS + "/" + apiKey.getId()))
             .body(ApiKeyDto.from(apiKey));
+    }
+
+    @PutMapping(value = "/{id}/revoke")
+    public ResponseEntity<Void> revokeApiKey(@PathVariable String id){
+        apiKeyService.revokeApiKey(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

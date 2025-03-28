@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-@Document(collation = "api_key")
+@Document(collection = "api_key")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
