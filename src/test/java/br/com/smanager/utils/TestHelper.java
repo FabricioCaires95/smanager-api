@@ -1,5 +1,6 @@
 package br.com.smanager.utils;
 
+import br.com.smanager.domain.document.ApiKey;
 import br.com.smanager.domain.entity.Member;
 import br.com.smanager.domain.entity.Project;
 import br.com.smanager.domain.entity.Task;
@@ -7,6 +8,7 @@ import br.com.smanager.domain.model.ProjectStatus;
 import br.com.smanager.domain.model.TaskStatus;
 import br.com.smanager.infrastructure.dto.SaveProjectDto;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 public final class TestHelper {
@@ -15,6 +17,8 @@ public final class TestHelper {
     public static final String MEMBER_ID = "medadasad7s5d1084";
     public static final String TASK_ID = "tasdadasad8s5d11079";
     public static final String SECRET_ID = "secretadasad8s5d15091";
+    public static final String API_KEY_ID = "apikeysad8s5d156091";
+    public static final String API_KEY_TEST = "testApiKey";
     public static final LocalDate INITIAL_DATE = LocalDate.of(2025, 10, 1);
     public static final LocalDate FINAL_DATE = LocalDate.of(2025, 10, 10);
 
@@ -64,6 +68,15 @@ public final class TestHelper {
                 "PENDING",
                 null
         );
+    }
+
+    public static ApiKey getApiKey() {
+        return ApiKey.builder()
+                .id(API_KEY_ID)
+                .creationWhen(Instant.MIN)
+                .expirationWhen(Instant.MAX)
+                .value(API_KEY_TEST)
+                .build();
     }
 
 }
