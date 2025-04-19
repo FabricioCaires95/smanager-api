@@ -6,6 +6,7 @@ import br.com.smanager.domain.entity.Project;
 import br.com.smanager.domain.entity.Task;
 import br.com.smanager.domain.model.ProjectStatus;
 import br.com.smanager.domain.model.TaskStatus;
+import br.com.smanager.infrastructure.dto.SaveMemberDto;
 import br.com.smanager.infrastructure.dto.SaveProjectDto;
 
 import java.time.Instant;
@@ -59,6 +60,16 @@ public final class TestHelper {
                 .build();
     }
 
+    public static Member createMemberWithParams(String id, String name, String email, String secret, boolean deleted) {
+        return Member.builder()
+                .id(id)
+                .name(name)
+                .email(email)
+                .secret(SECRET_ID)
+                .deleted(deleted)
+                .build();
+    }
+
     public static SaveProjectDto createSaveProjectDto() {
         return new SaveProjectDto(
                 "Project X",
@@ -79,4 +90,7 @@ public final class TestHelper {
                 .build();
     }
 
+    public static SaveMemberDto createSaveMemberDto() {
+        return new SaveMemberDto("Spacer Test", "spacer.test@gmail.com");
+    }
 }
