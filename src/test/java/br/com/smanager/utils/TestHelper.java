@@ -8,9 +8,13 @@ import br.com.smanager.domain.model.ProjectStatus;
 import br.com.smanager.domain.model.TaskStatus;
 import br.com.smanager.infrastructure.dto.SaveMemberDto;
 import br.com.smanager.infrastructure.dto.SaveProjectDto;
+import br.com.smanager.infrastructure.dto.SaveTaskDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 public final class TestHelper {
 
@@ -48,6 +52,16 @@ public final class TestHelper {
                 .assignedMember(createMember())
                 .project(createProject())
                 .build();
+    }
+
+    public static SaveTaskDto createTaskDto() {
+        return new SaveTaskDto(
+                "Task X title",
+                "Descript for task X",
+                5,
+                TaskStatus.PENDING,
+                PROJECT_ID,
+                MEMBER_ID);
     }
 
     public static Member createMember() {
@@ -92,5 +106,10 @@ public final class TestHelper {
 
     public static SaveMemberDto createSaveMemberDto() {
         return new SaveMemberDto("Spacer Test", "spacer.test@gmail.com");
+    }
+
+    public static Page<Task> getPageableTasks() {
+        return new PageImpl<>(List.of(createTask(), createTask()));
+
     }
 }
