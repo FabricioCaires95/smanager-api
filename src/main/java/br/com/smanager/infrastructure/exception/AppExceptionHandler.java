@@ -25,7 +25,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RequestException.class)
     public ResponseEntity<Object> handleRequestException(RequestException ex, WebRequest request) {
-        return handleException(ex, ex.getErrorCode(), ex.getMessage(), null, HttpStatus.BAD_REQUEST, request);
+        return handleException(ex, ex.getErrorCode(), ex.getMessage(), null, ex.getHttpStatus(), request);
     }
 
     @Override
