@@ -27,7 +27,13 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(r ->
-                        r.requestMatchers("/**").authenticated())
+                        r.requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/actuator/health"
+                                ).permitAll()
+                                .requestMatchers("/**").authenticated())
                 .addFilterBefore(
                         new AuthenticatorFilter(authenticationService),
                         UsernamePasswordAuthenticationFilter.class)
